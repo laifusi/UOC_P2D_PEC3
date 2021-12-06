@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PhysicsMaterial2D fullFriction;
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] float jumpForce = 10;
+    [SerializeField] WeaponSO[] weapons;
+    [SerializeField] TeamColor teamColor;
+    [SerializeField] Transform hand;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -20,10 +23,15 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private bool canJump;
     private float horizontalInput;
+    private WeaponSO currentWeapon;
+    private int currentWeaponIndex;
 
     private void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
+        currentWeapon = weapons[0];
+        currentWeaponIndex = 0;
+        ChangeWeapon();
     }
 
     private void Update()
@@ -107,5 +115,23 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody2d.velocity = new Vector3(speed * horizontalInput, rigidbody2d.velocity.y);
         }
+    }
+
+    public void ChangeWeapon()
+    {
+        if(currentWeaponIndex + 1 >= weapons.Length)
+        {
+            currentWeaponIndex = 0;
+        }
+        else
+        {
+            currentWeaponIndex++;
+        }
+        currentWeapon = weapons[currentWeaponIndex];
+        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, transform);
+        Weapon weaponComponent = weapon.GetComponent<Weapon>();
+        weaponComponent.Projectile = currentWeapon.Projectile;
+        SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
+        weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
     }
 }

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d15a62cb49ac74aa1477ee60d5d80b, type: 3}
+  m_Name: RocketLauncher
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 1920057683462507721, guid: 2dc9f24f022fdad43a8de2adf5bf4926, type: 3}
+  Projectile: {fileID: 11400000, guid: 84e9a02b6e2f0734581dc71370410291, type: 2}
+  redSprite: {fileID: 21300000, guid: 2ebd3669dbaf9f142bd6b1444934a403, type: 3}
+  blueSprite: {fileID: 21300000, guid: 837bde0e349efa24fa4fd77808011006, type: 3}
+  purpleSprite: {fileID: 21300000, guid: 6d645346bd1ec6441a7835c2936e3bfa, type: 3}
+  orangeSprite: {fileID: 21300000, guid: 35509657b2ad58a4ba68904e31a61330, type: 3}
+  greenSprite: {fileID: 21300000, guid: e31f3301fdd67204bb45f729af7605f2, type: 3}
