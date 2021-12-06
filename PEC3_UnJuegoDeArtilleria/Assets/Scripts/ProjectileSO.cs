@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new Projectile", menuName = "MyObjects/Projectile")]
@@ -38,6 +36,30 @@ public class ProjectileSO : ScriptableObject
         }
 
         return sprite;
+    }
+
+    public int GetLayerMask(TeamColor teamColor)
+    {
+        string maskName = "";
+        switch (teamColor)
+        {
+            case TeamColor.Red:
+                maskName = "RedTeam";
+                break;
+            case TeamColor.Blue:
+                maskName = "BlueTeam";
+                break;
+            case TeamColor.Purple:
+                maskName = "PurpleTeam";
+                break;
+            case TeamColor.Orange:
+                maskName = "OrangeTeam";
+                break;
+            case TeamColor.Green:
+                maskName = "GreenTeam";
+                break;
+        }
+        return LayerMask.NameToLayer(maskName);
     }
 }
 

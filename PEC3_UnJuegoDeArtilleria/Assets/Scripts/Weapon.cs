@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -11,20 +9,14 @@ public class Weapon : MonoBehaviour
 
     Rigidbody2D bulletRB;
 
-    private void Update()
-    {
-        
-    }
-
     [ContextMenu("Shoot")]
     public void Shoot()
     {
         GameObject bullet = Instantiate(Projectile.Prefab, exitPoint.position, exitPoint.rotation * Projectile.Prefab.transform.rotation);
         SpriteRenderer bulletSR = bullet.GetComponent<SpriteRenderer>();
         bulletSR.sprite = Projectile.SetSprite(TeamColor);
+        bullet.layer = Projectile.GetLayerMask(TeamColor);
         bulletRB = bullet.GetComponent<Rigidbody2D>();
-        bulletRB.gravityScale = Projectile.GravityAffection;
-        bulletRB.velocity = transform.right * Projectile.Speed;
     }
 
     private void LateUpdate()

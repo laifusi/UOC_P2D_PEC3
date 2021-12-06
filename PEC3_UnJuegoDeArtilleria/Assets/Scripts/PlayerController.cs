@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] WeaponSO[] weapons;
     [SerializeField] TeamColor teamColor;
     [SerializeField] Transform hand;
+    [SerializeField] Transform pivot;
+    [SerializeField] float maxTilt = 15;
+    [SerializeField] Transform weaponParent;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -25,13 +28,36 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private WeaponSO currentWeapon;
     private int currentWeaponIndex;
+    private float verticalInput;
+    private float tilt = 0;
 
     private void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         currentWeapon = weapons[0];
         currentWeaponIndex = 0;
-        ChangeWeapon();
+        ChangeWeapon(0);
+        string maskName = "";
+        switch(teamColor)
+        {
+            case TeamColor.Red:
+                maskName = "RedTeam";
+                break;
+            case TeamColor.Blue:
+                maskName = "BlueTeam";
+                break;
+            case TeamColor.Purple:
+                maskName = "PurpleTeam";
+                break;
+            case TeamColor.Orange:
+                maskName = "OrangeTeam";
+                break;
+            case TeamColor.Green:
+                maskName = "GreenTeam";
+                break;
+        }
+        if(maskName != "")
+            gameObject.layer = LayerMask.NameToLayer(maskName);
     }
 
     private void Update()
@@ -48,6 +74,20 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        verticalInput = Input.GetAxis("Vertical");
+        if (verticalInput > 0)
+            tilt += 0.1f;
+        else if (verticalInput < 0)
+            tilt -= 0.1f;
+
+        tilt = Mathf.Clamp(tilt, -maxTilt, maxTilt);
+        pivot.rotation = Quaternion.Euler(0, 0, tilt);
+
+        if (Input.mouseScrollDelta.y > 0)
+            ChangeWeapon(1);
+        else if (Input.mouseScrollDelta.y < 0)
+            ChangeWeapon(-1);
     }
 
     private void GetSlopeInfo()
@@ -117,21 +157,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ChangeWeapon()
+    public void ChangeWeapon(int direction)
     {
-        if(currentWeaponIndex + 1 >= weapons.Length)
+        for(int i = 0; i< weaponParent.childCount; i++)
+        {
+            Destroy(weaponParent.GetChild(i).gameObject);
+        }
+        currentWeaponIndex += direction;
+        if(currentWeaponIndex >= weapons.Length)
         {
             currentWeaponIndex = 0;
         }
-        else
+        else if(currentWeaponIndex < 0)
         {
-            currentWeaponIndex++;
+            currentWeaponIndex = weapons.Length - 1;
         }
         currentWeapon = weapons[currentWeaponIndex];
-        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, transform);
+        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, weaponParent);
         Weapon weaponComponent = weapon.GetComponent<Weapon>();
         weaponComponent.Projectile = currentWeapon.Projectile;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
-        weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
+        if(weaponSpriteRenderer != null)
+            weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
     }
 }
