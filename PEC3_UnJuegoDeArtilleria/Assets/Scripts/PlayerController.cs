@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
             currentWeaponIndex = weapons.Length - 1;
         }
         currentWeapon = weapons[currentWeaponIndex];
-        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, Quaternion.identity, weaponParent);
+        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, weaponParent);
         weaponComponent = weapon.GetComponent<Weapon>();
         weaponComponent.Projectile = currentWeapon.Projectile;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();

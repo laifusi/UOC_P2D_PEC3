@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: ParticleEffects
+    uniqueID: 3866134471
+    locked: 0
