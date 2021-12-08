@@ -15,6 +15,7 @@ MonoBehaviour:
   Prefab: {fileID: 2860198324948097410, guid: 5f85258412ed17948923dfa5b9db7b93, type: 3}
   Speed: 10
   GravityAffection: 1
+  Damage: 25
   redSprite: {fileID: 21300000, guid: 9db457348ab3ed149b89b7e0604abc0a, type: 3}
   blueSprite: {fileID: 21300000, guid: 0aa6095ddf0316646a1b0d510c7af0f7, type: 3}
   purpleSprite: {fileID: 21300000, guid: 541e4543f0968a84082d92a9b9ea0991, type: 3}

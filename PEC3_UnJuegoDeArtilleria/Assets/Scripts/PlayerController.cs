@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform weaponParent;
     [SerializeField] SpriteLibraryAsset charactersLibraryAsset;
     [SerializeField] SpriteResolver[] bodyParts;
-    [SerializeField] CharacterType characterType; 
+    [SerializeField] CharacterType characterType;
+    [SerializeField] int initialHealth = 100;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private float tilt = 0.5f;
     private Animator animator;
     private float shootForce = 0;
+    private int health;
 
     private void Start()
     {
@@ -68,6 +70,8 @@ public class PlayerController : MonoBehaviour
         {
             bodyParts[i].SetCategoryAndLabel(bodyParts[i].GetCategory(), characterType.ToString());
         }
+
+        health = initialHealth;
     }
 
     private void Update()
@@ -194,6 +198,20 @@ public class PlayerController : MonoBehaviour
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
         if(weaponSpriteRenderer != null)
             weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
 

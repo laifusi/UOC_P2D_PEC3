@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour
         SpriteRenderer bulletSR = bullet.GetComponent<SpriteRenderer>();
         bulletSR.sprite = Projectile.SetSprite(TeamColor);
         bullet.layer = Projectile.GetLayerMask(TeamColor);
+        Projectile bulletProjectile = bullet.GetComponent<Projectile>();
+        bulletProjectile.Damage = Projectile.Damage;
         bulletRB = bullet.GetComponent<Rigidbody2D>();
     }
 

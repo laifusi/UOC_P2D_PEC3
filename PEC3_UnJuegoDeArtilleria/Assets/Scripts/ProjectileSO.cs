@@ -6,6 +6,7 @@ public class ProjectileSO : ScriptableObject
     public GameObject Prefab;
     public float Speed;
     public float GravityAffection;
+    public int Damage;
 
     [SerializeField] private Sprite redSprite;
     [SerializeField] private Sprite blueSprite;
