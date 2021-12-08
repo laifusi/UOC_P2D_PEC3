@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Experimental.U2D.Animation;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TeamColor teamColor;
     [SerializeField] Transform hand;
     [SerializeField] Transform weaponParent;
+    [SerializeField] SpriteLibraryAsset charactersLibraryAsset;
+    [SerializeField] SpriteResolver[] bodyParts;
+    [SerializeField] CharacterType characterType; 
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -58,6 +62,10 @@ public class PlayerController : MonoBehaviour
         }
         if(maskName != "")
             gameObject.layer = LayerMask.NameToLayer(maskName);
+        for(int i = 0; i < bodyParts.Length; i++)
+        {
+            bodyParts[i].SetCategoryAndLabel(bodyParts[i].GetCategory(), characterType.ToString());
+        }
     }
 
     private void Update()
@@ -180,4 +188,9 @@ public class PlayerController : MonoBehaviour
         if(weaponSpriteRenderer != null)
             weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
     }
+}
+
+public enum CharacterType
+{
+    FemaleAdventurer, FemalePerson, MaleAdventurer, MalePerson, Robot, Zombie
 }
