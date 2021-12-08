@@ -1,0 +1,234 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bf7c34a0dc4e6348bea04faa70406ee, type: 3}
+  m_Name: Characters
+  m_EditorClassIdentifier: 
+  m_Labels:
+  - m_Name: Arm
+    m_Hash: -1609353100
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 4d33315154f77b74198c78eec66a2f36, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 86059c6abc4373744b3dcee6c1ecbeca, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: d3460313222d8ee4aacb0221a2a99e8a, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: ceccf66f28463294bab6daf84c00a76b, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 00c48bc720211ec4fa28f23373b0e7c1, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: fe9f6965fd9f72e4a93f12707a23927e, type: 3}
+  - m_Name: Back
+    m_Hash: -839094775
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 0e17b3ba27835e74b8ada0295032c455, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 2e5d26fa60d13534ab90cc4a5a154c83, type: 3}
+  - m_Name: Body
+    m_Hash: 2073732236
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: b2a2492faaaa809498f480d5592ad49f, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 46df08e707aa5c646908ac4678c136d1, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 8aee6a83c16bcba43966ba26bfa0d987, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: 4db37dfdb448d31489350d9e529854db, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: c430facdf63d414458eeb6cd4bdc320d, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 90c055964e4abfc4192bd0e698c1276d, type: 3}
+  - m_Name: BodyBack
+    m_Hash: -126134254
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: fe3df92defa11374fb8824b0d6372ae3, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 313894c0e114dcf4aa384e54a0ee02b6, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 4fb578cb6537d234c93fff6963675cfe, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: c97aca25d06dad942be8838b0cd22f02, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 3cf5a1bed856f544eb5a4e8f93615bb2, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 287cead6f77c32a43b0d8bc98fb2f0f3, type: 3}
+  - m_Name: Hand
+    m_Hash: -2024739407
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 3f770be669c2add4591d81cf4ad1fbb0, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: c5d9122074390324d98218c4d5ed52db, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 6600493895dc952479f0b2072d9db3fd, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: b8b2c68cb2703a949a0ea543ef160f01, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: d6c1cb2416aae1d4e8d7440f1c561f4a, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: b0d9568a9db28a640bf1ef9e18b7eee6, type: 3}
+  - m_Name: Head
+    m_Hash: 130111906
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 990a6afaa1222694e89ad7c53592e021, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: af7c78e043c7fe0469a7dcf489a8c6d9, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 36e84c130b675734b978e51d37eb47d3, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: 845df14da4df2c643b7590e1d4db958c, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 6df43feb6692ba14dbcb6db800be81de, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 78e4e682c382e9e40a02f338ee4c63cc, type: 3}
+  - m_Name: HeadBack
+    m_Hash: 91674900
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: d75a8a673e044a04e8fb252a32e7f655, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 8e9858bb40cc2c24ca8b85688e7501db, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 43b6f599d3622ee44a8d6094c508af10, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: 007f205ebe24be04fb791f5a25940504, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 6247302fdab5c7746967ac5094723aa9, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: e0c62047afdcc49458c0a108cc0c76fd, type: 3}
+  - m_Name: Head Focus
+    m_Hash: 2032448732
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 9e20541b85f07b346abf607451458150, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 0a1d4d190f428a846b3f957787e895d9, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: dcdbaee6267a04e4c98485cce603a967, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: 1bc66a404292e7e41b6cd15145f5e09d, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: ffb81c1f61c679649a061cfe3de1d70a, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 839f5a0ad20311345bc2f2ff026c4edf, type: 3}
+  - m_Name: HeadShock
+    m_Hash: -201951443
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 36924d78df510fb42abe08b3c260fbc9, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 202943f025f09c14aa4bbeabe419f253, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: f61faab5e9548404794c1f4eec7870fd, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: fa24bf0be717bc2499e20ac8088dae4b, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 5dd12dab0b8524543a9e67761ea8c531, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 23e77d9e62ae6764c9620c1bdba86ec3, type: 3}
+  - m_Name: Leg
+    m_Hash: 1302185647
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: 2371e515e4e2d244ea182945211950eb, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 82320ec0effdd1a4680941652a48402f, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: a046ff28853af9242b59eb69e7769c50, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: fabe366fd5cf7b3469f27dec5980e7c3, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: 323dd393cdd1ba644ae5dfcd92d66556, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: c33586d30afc66d40891d735badc46d3, type: 3}
+  - m_Name: LegBend
+    m_Hash: -1555263534
+    m_CategoryList:
+    - m_Name: FemalePerson
+      m_Hash: 913397623
+      m_Sprite: {fileID: 21300000, guid: ffe37f7896ce03a40b0d42f979f969c8, type: 3}
+    - m_Name: FemaleAdventurer
+      m_Hash: 1418445917
+      m_Sprite: {fileID: 21300000, guid: 7d73de2bae7c36246a8d0aa36c53ea16, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 21300000, guid: 051158ddcda72bd499cfd1d881bd77ff, type: 3}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 21300000, guid: f0a19bf683fd61b4a88bd9f6cba2927d, type: 3}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 21300000, guid: f415187cb421f7f4fa71a5907283f9fa, type: 3}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 21300000, guid: 8143dcdae0b7dd24f87272891007233a, type: 3}

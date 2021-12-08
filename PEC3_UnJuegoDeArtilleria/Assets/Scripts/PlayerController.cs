@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] WeaponSO[] weapons;
     [SerializeField] TeamColor teamColor;
     [SerializeField] Transform hand;
-    [SerializeField] Transform pivot;
+    //[SerializeField] Transform pivot;
     [SerializeField] float maxTilt = 15;
     [SerializeField] Transform weaponParent;
 
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
             tilt -= 0.1f;
 
         tilt = Mathf.Clamp(tilt, -maxTilt, maxTilt);
-        pivot.rotation = Quaternion.Euler(0, 0, tilt);
+        //pivot.rotation = Quaternion.Euler(0, 0, tilt);
 
         if (Input.mouseScrollDelta.y > 0)
             ChangeWeapon(1);
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
             currentWeaponIndex = weapons.Length - 1;
         }
         currentWeapon = weapons[currentWeaponIndex];
-        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, weaponParent);
+        GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, Quaternion.identity, weaponParent);
         Weapon weaponComponent = weapon.GetComponent<Weapon>();
         weaponComponent.Projectile = currentWeapon.Projectile;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
