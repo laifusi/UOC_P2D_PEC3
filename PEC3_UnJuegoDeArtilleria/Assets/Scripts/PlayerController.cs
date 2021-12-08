@@ -30,9 +30,11 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private WeaponSO currentWeapon;
     private int currentWeaponIndex;
+    private Weapon weaponComponent;
     private float verticalInput;
     private float tilt = 0.5f;
     private Animator animator;
+    private float shootForce = 0;
 
     private void Start()
     {
@@ -96,6 +98,11 @@ public class PlayerController : MonoBehaviour
             ChangeWeapon(1);
         else if (Input.mouseScrollDelta.y < 0)
             ChangeWeapon(-1);
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            weaponComponent.Shoot();
+        }
     }
 
     private void GetSlopeInfo()
@@ -182,7 +189,7 @@ public class PlayerController : MonoBehaviour
         }
         currentWeapon = weapons[currentWeaponIndex];
         GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, Quaternion.identity, weaponParent);
-        Weapon weaponComponent = weapon.GetComponent<Weapon>();
+        weaponComponent = weapon.GetComponent<Weapon>();
         weaponComponent.Projectile = currentWeapon.Projectile;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
         if(weaponSpriteRenderer != null)
