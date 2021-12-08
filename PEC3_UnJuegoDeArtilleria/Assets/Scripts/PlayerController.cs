@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] WeaponSO[] weapons;
     [SerializeField] TeamColor teamColor;
     [SerializeField] Transform hand;
-    //[SerializeField] Transform pivot;
-    [SerializeField] float maxTilt = 15;
     [SerializeField] Transform weaponParent;
 
     private Rigidbody2D rigidbody2d;
@@ -29,11 +27,13 @@ public class PlayerController : MonoBehaviour
     private WeaponSO currentWeapon;
     private int currentWeaponIndex;
     private float verticalInput;
-    private float tilt = 0;
+    private float tilt = 0.5f;
+    private Animator animator;
 
     private void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         currentWeapon = weapons[0];
         currentWeaponIndex = 0;
         ChangeWeapon(0);
@@ -77,12 +77,12 @@ public class PlayerController : MonoBehaviour
 
         verticalInput = Input.GetAxis("Vertical");
         if (verticalInput > 0)
-            tilt += 0.1f;
+            tilt += 0.001f;
         else if (verticalInput < 0)
-            tilt -= 0.1f;
+            tilt -= 0.001f;
 
-        tilt = Mathf.Clamp(tilt, -maxTilt, maxTilt);
-        //pivot.rotation = Quaternion.Euler(0, 0, tilt);
+        tilt = Mathf.Clamp(tilt, 0, 1);
+        animator.SetFloat("tilt", tilt);
 
         if (Input.mouseScrollDelta.y > 0)
             ChangeWeapon(1);
