@@ -43,6 +43,18 @@ MonoBehaviour:
     - m_Name: FemaleAdventurer
       m_Hash: 1418445917
       m_Sprite: {fileID: 21300000, guid: 2e5d26fa60d13534ab90cc4a5a154c83, type: 3}
+    - m_Name: MalePerson
+      m_Hash: 531550932
+      m_Sprite: {fileID: 0}
+    - m_Name: MaleAdventurer
+      m_Hash: -1464210847
+      m_Sprite: {fileID: 0}
+    - m_Name: Robot
+      m_Hash: 434786784
+      m_Sprite: {fileID: 0}
+    - m_Name: Zombie
+      m_Hash: 206380807
+      m_Sprite: {fileID: 0}
   - m_Name: Body
     m_Hash: 2073732236
     m_CategoryList:
