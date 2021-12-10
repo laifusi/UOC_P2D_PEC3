@@ -4321,7 +4321,23 @@ MonoBehaviour:
   page2ContinueButton: {fileID: 1314349299}
   teamNameInputField: {fileID: 254173299}
   characterNameInputField: {fileID: 1924319563}
-  AIToggle: {fileID: 0}
+  AIToggle: {fileID: 970951606}
+  colorsButtons:
+  - {fileID: 1288327124}
+  - {fileID: 839610769}
+  - {fileID: 890154511}
+  - {fileID: 888698083}
+  - {fileID: 1431227594}
+  charactersButtons:
+  - {fileID: 1894869690}
+  - {fileID: 1826845536}
+  - {fileID: 1878658103}
+  - {fileID: 1146238502}
+  - {fileID: 836215089}
+  - {fileID: 1247665078}
+  backHairImages:
+  - {fileID: 25157833}
+  - {fileID: 200530108}
 --- !u!4 &1701360012
 Transform:
   m_ObjectHideFlags: 0

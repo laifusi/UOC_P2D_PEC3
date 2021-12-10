@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GameOptionsManager : MonoBehaviour
+public class GameOptionsManager : Singleton<GameOptionsManager>
 {
     [SerializeField] Button page1ContinueButton;
     [SerializeField] Text teamNameText;
@@ -12,15 +13,22 @@ public class GameOptionsManager : MonoBehaviour
     [SerializeField] InputField teamNameInputField;
     [SerializeField] InputField characterNameInputField;
     [SerializeField] Toggle AIToggle;
+    [SerializeField] Button[] colorsButtons;
+    [SerializeField] Button[] charactersButtons;
+    [SerializeField] Image[] backHairImages;
 
     int numberOfTeams;
     int charactersPerTeam;
-    Team[] teams;
 
     private bool[] page1Options = new bool[2];
     private bool[] page2Options = new bool[4];
     private int currentTeam;
     private int currentCharacter;
+    private ColorBlock nonSelectedColorBlock;
+    private ColorBlock selectableColorBlock;
+    private Button selectedColorButton;
+
+    public Team[] Teams;
 
     public void CheckNumberOfTeams(InputField input)
     {
@@ -46,15 +54,15 @@ public class GameOptionsManager : MonoBehaviour
         bool allOptionsSelected = CheckAllOptionsSelected(page1Options, page1ContinueButton);
         if(allOptionsSelected)
         {
-            teams = new Team[numberOfTeams];
+            Teams = new Team[numberOfTeams];
 
-            for (int i = 0; i < teams.Length; i++)
+            for (int i = 0; i < Teams.Length; i++)
             {
-                teams[i] = new Team();
-                teams[i].Characters = new Character[charactersPerTeam];
-                for(int j = 0; j < teams[i].Characters.Length; j++)
+                Teams[i] = new Team();
+                Teams[i].Characters = new Character[charactersPerTeam];
+                for(int j = 0; j < Teams[i].Characters.Length; j++)
                 {
-                    teams[i].Characters[j] = new Character();
+                    Teams[i].Characters[j] = new Character();
                 }
             }
         }
@@ -82,62 +90,129 @@ public class GameOptionsManager : MonoBehaviour
         teamColorText.text = "Color del equipo (" + teamNumber + "/" + numberOfTeams + "):";
         characterText.text = "Personaje (" + characterNumber + "/" + charactersPerTeam + "):";
         characterNameText.text = "Nombre del personaje (" + characterNumber + "/" + charactersPerTeam + "):";
-        teamNameInputField.text = "";
         characterNameInputField.text = "";
+
+        for (int i = 0; i < charactersButtons.Length; i++)
+        {
+            nonSelectedColorBlock = charactersButtons[i].colors;
+            nonSelectedColorBlock.normalColor = Color.white;
+            charactersButtons[i].colors = nonSelectedColorBlock;
+            if(i < backHairImages.Length)
+            {
+                backHairImages[i].color = Color.white;
+            }
+        }
+
+        page2Options[2] = false;
+        page2Options[3] = false;
+
         page2ContinueButton.interactable = false;
     }
 
     public void SaveTeamName(InputField input)
     {
-        teams[currentTeam].TeamName = input.text;
+        Teams[currentTeam].TeamName = input.text;
 
         CheckPage2Options(0);
     }
 
     public void SaveTeamColor(string color)
     {
-        if(color == "Red")
-            teams[currentTeam].TeamColor = TeamColor.Red;
+        selectedColorButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+        if (color == "Red")
+        {
+            Teams[currentTeam].TeamColor = TeamColor.Red;
+        }
         else if (color == "Blue")
-            teams[currentTeam].TeamColor = TeamColor.Blue;
+        {
+            Teams[currentTeam].TeamColor = TeamColor.Blue;
+        }
         else if (color == "Purple")
-            teams[currentTeam].TeamColor = TeamColor.Purple;
+        {
+            Teams[currentTeam].TeamColor = TeamColor.Purple;
+        }
         else if (color == "Orange")
-            teams[currentTeam].TeamColor = TeamColor.Orange;
+        {
+            Teams[currentTeam].TeamColor = TeamColor.Orange;
+        }
         else if (color == "Green")
-            teams[currentTeam].TeamColor = TeamColor.Green;
+        {
+            Teams[currentTeam].TeamColor = TeamColor.Green;
+        }
+
+        for(int i = 0; i < colorsButtons.Length; i++)
+        {
+            if(selectedColorButton != colorsButtons[i])
+            {
+                nonSelectedColorBlock = colorsButtons[i].colors;
+                nonSelectedColorBlock.normalColor = Color.grey;
+                colorsButtons[i].colors = nonSelectedColorBlock;
+            }
+            else
+            {
+                nonSelectedColorBlock = colorsButtons[i].colors;
+                nonSelectedColorBlock.normalColor = Color.white;
+                colorsButtons[i].colors = nonSelectedColorBlock;
+            }
+        }
 
         CheckPage2Options(1);
     }
 
     public void SaveCharacter(string character)
     {
+        Button selectedCharacterButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+
         if (character == "FemaleAdventurer")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.FemaleAdventurer;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.FemaleAdventurer;
         else if (character == "FemalePerson")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.FemalePerson;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.FemalePerson;
         else if (character == "MaleAdventurer")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.MaleAdventurer;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.MaleAdventurer;
         else if (character == "MalePerson")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.MalePerson;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.MalePerson;
         else if (character == "Robot")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.Robot;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.Robot;
         else if (character == "Zombie")
-            teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.Zombie;
+            Teams[currentTeam].Characters[currentCharacter].CharacterType = CharacterType.Zombie;
+
+        for (int i = 0; i < charactersButtons.Length; i++)
+        {
+            if (selectedCharacterButton != charactersButtons[i])
+            {
+                nonSelectedColorBlock = charactersButtons[i].colors;
+                nonSelectedColorBlock.normalColor = Color.grey;
+                charactersButtons[i].colors = nonSelectedColorBlock;
+                if (i < backHairImages.Length)
+                {
+                    backHairImages[i].color = Color.grey;
+                }
+            }
+            else
+            {
+                nonSelectedColorBlock = charactersButtons[i].colors;
+                nonSelectedColorBlock.normalColor = Color.white;
+                charactersButtons[i].colors = nonSelectedColorBlock;
+                if (i < backHairImages.Length)
+                {
+                    backHairImages[i].color = Color.white;
+                }
+            }
+        }
 
         CheckPage2Options(2);
     }
 
     public void SaveCharacterName(InputField input)
     {
-        teams[currentTeam].Characters[currentCharacter].CharacterName = input.text;
+        Teams[currentTeam].Characters[currentCharacter].CharacterName = input.text;
 
         CheckPage2Options(3);
     }
 
     public void SaveAICheck(Toggle toggle)
     {
-        teams[currentTeam].IsAI = toggle.isOn;
+        Teams[currentTeam].IsAI = toggle.isOn;
     }
 
     private void CheckPage2Options(int index)
@@ -160,6 +235,7 @@ public class GameOptionsManager : MonoBehaviour
                     page2ContinueButton.onClick.AddListener(() => currentTeam++);
                     page2ContinueButton.onClick.AddListener(() => currentCharacter = 0);
                     page2ContinueButton.onClick.AddListener(() => AIToggle.isOn = false);
+                    page2ContinueButton.onClick.AddListener(ResetTeamData);
                     page2ContinueButton.onClick.AddListener(UpdateTeamChoosingPanel);
                 }
             }
@@ -178,5 +254,23 @@ public class GameOptionsManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void ResetTeamData()
+    {
+        teamNameInputField.text = "";
+        selectedColorButton.interactable = false;
+        for (int i = 0; i < colorsButtons.Length; i++)
+        {
+            if (colorsButtons[i].interactable)
+            {
+                nonSelectedColorBlock = colorsButtons[i].colors;
+                nonSelectedColorBlock.normalColor = Color.white;
+                colorsButtons[i].colors = nonSelectedColorBlock;
+            }
+        }
+
+        page2Options[0] = false;
+        page2Options[1] = false;
     }
 }
