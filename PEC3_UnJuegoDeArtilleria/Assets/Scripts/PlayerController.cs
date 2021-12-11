@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Experimental.U2D.Animation;
 
@@ -16,11 +17,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform weaponParent;
     [SerializeField] SpriteLibraryAsset charactersLibraryAsset;
     [SerializeField] SpriteResolver[] bodyParts;
-    [SerializeField] CharacterType characterType;
+    public CharacterType CharacterType;
     [SerializeField] int initialHealth = 100;
 
     public bool IsAI;
     public bool HasTurn;
+    public string CharacterName;
+
+    public Action<string> OnNameAdded;
+    public Action<int> OnHealthChanged;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -71,10 +76,11 @@ public class PlayerController : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer(maskName);
         for(int i = 0; i < bodyParts.Length; i++)
         {
-            bodyParts[i].SetCategoryAndLabel(bodyParts[i].GetCategory(), characterType.ToString());
+            bodyParts[i].SetCategoryAndLabel(bodyParts[i].GetCategory(), CharacterType.ToString());
         }
 
         health = initialHealth;
+        OnHealthChanged?.Invoke(health);
     }
 
     protected void Update()
@@ -193,13 +199,11 @@ public class PlayerController : MonoBehaviour
             {
                 facingRight = false;
                 transform.Rotate(0, 180, 0);
-                Debug.Log("facing left");
             }
             else if(!facingRight && horizontalInput > 0)
             {
                 facingRight = true;
                 transform.Rotate(0, -180, 0);
-                Debug.Log("facing right");
             }
         }
 
@@ -225,6 +229,7 @@ public class PlayerController : MonoBehaviour
         GameObject weapon = Instantiate(currentWeapon.Prefab, hand.position, hand.rotation, weaponParent);
         weaponComponent = weapon.GetComponent<Weapon>();
         weaponComponent.Projectile = currentWeapon.Projectile;
+        weaponComponent.TeamColor = TeamColor;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
         if(weaponSpriteRenderer != null)
             weaponSpriteRenderer.sprite = currentWeapon.SetSprite(TeamColor);
@@ -234,7 +239,8 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if(health <= 0)
+        OnHealthChanged?.Invoke(health);
+        if (health <= 0)
         {
             Die();
         }

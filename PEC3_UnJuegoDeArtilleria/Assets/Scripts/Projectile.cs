@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour
         if(player != null)
         {
             player.TakeDamage(Damage);
+            GetComponent<Collider2D>().enabled = false;
         }
     }
 
