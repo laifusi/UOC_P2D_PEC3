@@ -11,13 +11,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] float jumpForce = 10;
     [SerializeField] WeaponSO[] weapons;
-    [SerializeField] TeamColor teamColor;
+    public TeamColor TeamColor;
     [SerializeField] Transform hand;
     [SerializeField] Transform weaponParent;
     [SerializeField] SpriteLibraryAsset charactersLibraryAsset;
     [SerializeField] SpriteResolver[] bodyParts;
     [SerializeField] CharacterType characterType;
     [SerializeField] int initialHealth = 100;
+
+    public bool IsAI;
+    public bool HasTurn;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -28,17 +31,16 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D hit;
     private bool isJumping;
     private bool canJump;
-    private float horizontalInput;
+    protected float horizontalInput;
     private WeaponSO currentWeapon;
     private int currentWeaponIndex;
-    private Weapon weaponComponent;
+    protected Weapon weaponComponent;
     private float verticalInput;
-    private float tilt = 0.5f;
+    protected float tilt = 0.5f;
     private Animator animator;
-    private float shootForce = 0;
     private int health;
 
-    private void Start()
+    protected void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -46,7 +48,7 @@ public class PlayerController : MonoBehaviour
         currentWeaponIndex = 0;
         ChangeWeapon(0);
         string maskName = "";
-        switch(teamColor)
+        switch(TeamColor)
         {
             case TeamColor.Red:
                 maskName = "RedTeam";
@@ -74,39 +76,46 @@ public class PlayerController : MonoBehaviour
         health = initialHealth;
     }
 
-    private void Update()
+    protected void Update()
     {
+        if (!HasTurn)
+            return;
+
         CheckIsGrounded();
 
-        horizontalInput = Input.GetAxis("Horizontal");
+        if (!IsAI)
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump();
+            }
+
+            verticalInput = Input.GetAxis("Vertical");
+
+            if (verticalInput > 0)
+                tilt += 0.001f;
+            else if (verticalInput < 0)
+                tilt -= 0.001f;
+
+            if (Input.mouseScrollDelta.y > 0)
+                ChangeWeapon(1);
+            else if (Input.mouseScrollDelta.y < 0)
+                ChangeWeapon(-1);
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                weaponComponent.Shoot();
+            }
+        }
 
         GetSlopeInfo();
 
         Move();
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
-
-        verticalInput = Input.GetAxis("Vertical");
-        if (verticalInput > 0)
-            tilt += 0.001f;
-        else if (verticalInput < 0)
-            tilt -= 0.001f;
-
         tilt = Mathf.Clamp(tilt, 0, 1);
         animator.SetFloat("tilt", tilt);
-
-        if (Input.mouseScrollDelta.y > 0)
-            ChangeWeapon(1);
-        else if (Input.mouseScrollDelta.y < 0)
-            ChangeWeapon(-1);
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            weaponComponent.Shoot();
-        }
     }
 
     private void GetSlopeInfo()
@@ -197,7 +206,7 @@ public class PlayerController : MonoBehaviour
         weaponComponent.Projectile = currentWeapon.Projectile;
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
         if(weaponSpriteRenderer != null)
-            weaponSpriteRenderer.sprite = currentWeapon.SetSprite(teamColor);
+            weaponSpriteRenderer.sprite = currentWeapon.SetSprite(TeamColor);
     }
 
     public void TakeDamage(int damage)
