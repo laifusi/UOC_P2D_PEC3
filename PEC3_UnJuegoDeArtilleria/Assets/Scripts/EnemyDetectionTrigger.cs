@@ -31,9 +31,9 @@ public class EnemyDetectionTrigger : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer(maskName);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Character"))
+        if(collision.CompareTag("Character") && !aiCharacter.IsEnemyNear)
         {
             aiCharacter.IsEnemyNear = true;
             aiCharacter.EnemyPosition = collision.transform;

@@ -466,6 +466,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 3068356567992722104, guid: 9398b8fe0e79787448696fc2826e07cd, type: 3}
+      propertyPath: TeamColor
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9398b8fe0e79787448696fc2826e07cd, type: 3}
 --- !u!1001 &8284605281237062441
@@ -485,7 +489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3261385822763548178, guid: 1d2b6b715a5ab9444a401b59a59a8b21, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.55
+      value: 7.3
       objectReference: {fileID: 0}
     - target: {fileID: 3261385822763548178, guid: 1d2b6b715a5ab9444a401b59a59a8b21, type: 3}
       propertyPath: m_LocalPosition.y

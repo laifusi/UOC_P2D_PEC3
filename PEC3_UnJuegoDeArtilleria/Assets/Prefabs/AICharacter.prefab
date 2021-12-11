@@ -348,7 +348,7 @@ MonoBehaviour:
   - {fileID: 5658521762126349658}
   - {fileID: 7411236720743674929}
   m_Bounds:
-    m_Center: {x: 0.2635551, y: -0.38062805, z: 0}
+    m_Center: {x: 0.26355606, y: -0.38062805, z: 0}
     m_Extent: {x: 0.32967573, y: 0.17547727, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -482,7 +482,7 @@ MonoBehaviour:
   - {fileID: 5267896220862748780}
   - {fileID: 6054786233676555209}
   m_Bounds:
-    m_Center: {x: 0.26605833, y: 0.39927173, z: 0}
+    m_Center: {x: 0.26605785, y: 0.39927173, z: 0}
     m_Extent: {x: 0.32448757, y: 0.18044722, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
@@ -549,7 +549,6 @@ Transform:
   - {fileID: 3261385823032458801}
   - {fileID: 3261385823194417701}
   - {fileID: 8150879051579727593}
-  - {fileID: 7866447744325055169}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -631,8 +630,8 @@ MonoBehaviour:
   noFriction: {fileID: 6200000, guid: 63c3a2abbe6df47468c7348bcaab0f9f, type: 2}
   jumpForce: 10
   weapons:
-  - {fileID: 11400000, guid: db6d3ae3191bf7f44be3d3094031ec56, type: 2}
   - {fileID: 11400000, guid: 2f10b8b16c6c6fb439c5bf8489411562, type: 2}
+  - {fileID: 11400000, guid: db6d3ae3191bf7f44be3d3094031ec56, type: 2}
   TeamColor: 0
   hand: {fileID: 2841969814890693732}
   weaponParent: {fileID: 5856948871122511338}
@@ -652,6 +651,8 @@ MonoBehaviour:
   IsAI: 1
   HasTurn: 0
   IsEnemyNear: 0
+  EnemyPosition: {fileID: 0}
+  shootingRate: 0.5
 --- !u!1 &3261385822966574802
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,8 +756,8 @@ MonoBehaviour:
   - {fileID: 3710647733617416957}
   - {fileID: 7783041080809837005}
   m_Bounds:
-    m_Center: {x: 0.43175364, y: 0.033199385, z: 0}
-    m_Extent: {x: 0.19861571, y: 0.17089653, z: 0}
+    m_Center: {x: 0.43175387, y: 0.033199623, z: 0}
+    m_Extent: {x: 0.19861592, y: 0.17089653, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &1185574914083311460
@@ -1136,8 +1137,8 @@ MonoBehaviour:
   - {fileID: 1123122826897448296}
   - {fileID: 2283522793084686528}
   m_Bounds:
-    m_Center: {x: -0.16812518, y: 0.20158032, z: 0}
-    m_Extent: {x: 0.30202714, y: 0.18611918, z: 0}
+    m_Center: {x: -0.16812494, y: 0.20158058, z: 0}
+    m_Extent: {x: 0.3020269, y: 0.18611935, z: 0}
   m_UseBatching: 1
   m_AlwaysUpdate: 1
 --- !u!114 &6937412269952025769
@@ -1779,7 +1780,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7391083004107311390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3261385822763548178}
@@ -1821,77 +1822,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 25}
-  m_EdgeRadius: 0
---- !u!1 &7568983593871244712
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7866447744325055169}
-  - component: {fileID: 3344274066589916883}
-  - component: {fileID: 5647296678473037208}
-  m_Layer: 0
-  m_Name: enemyDetector (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7866447744325055169
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568983593871244712}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3261385822763548178}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3344274066589916883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568983593871244712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67dbccf5be56425469573b8fe5b925ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!61 &5647296678473037208
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568983593871244712}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 25}
+  m_Size: {x: 10, y: 25}
   m_EdgeRadius: 0
 --- !u!1 &7790766699843042890
 GameObject:

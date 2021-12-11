@@ -9,6 +9,9 @@ public class AICharacter : PlayerController
     private int direction;
     private bool changedDirectionInThisTurn;
     private bool changedWeaponInThisTurn;
+    private float nextShootingTime;
+
+    [SerializeField] float shootingRate = 0.5f;
 
     private void Start()
     {
@@ -21,13 +24,20 @@ public class AICharacter : PlayerController
     private void Update()
     {
         if (!HasTurn)
+        {
+            ResetAI();
+            ResetFriction();
+        }
+
+        if (!HasTurn)
             return;
 
         base.Update();
 
         if(IsEnemyNear)
         {
-            if (tilt != shootingTilt)
+            horizontalInput = 0;
+            if (Mathf.Floor(tilt * 1000)/1000 != Mathf.Floor(shootingTilt*1000)/1000)
             {
                 if(tilt > shootingTilt)
                 {
@@ -40,7 +50,11 @@ public class AICharacter : PlayerController
             }
             else
             {
-                weaponComponent.Shoot();
+                if(Time.time >= nextShootingTime)
+                {
+                    weaponComponent.Shoot();
+                    nextShootingTime = Time.time + 1/shootingRate;
+                }
             }
         }
         else

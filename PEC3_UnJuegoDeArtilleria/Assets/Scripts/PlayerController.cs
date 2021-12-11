@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     protected float tilt = 0.5f;
     private Animator animator;
     private int health;
+    private bool facingRight = true;
 
     protected void Start()
     {
@@ -78,6 +79,8 @@ public class PlayerController : MonoBehaviour
 
     protected void Update()
     {
+        if (!HasTurn)
+            ResetFriction();
         if (!HasTurn)
             return;
 
@@ -183,6 +186,20 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody2d.velocity = new Vector3(speed * horizontalInput, rigidbody2d.velocity.y);
         }
+
+        if (horizontalInput != 0)
+        {
+            if(facingRight && horizontalInput < 0)
+            {
+                facingRight = false;
+                transform.Rotate(0, 180, 0);
+            }
+            else if(!facingRight && horizontalInput > 0)
+            {
+                facingRight = true;
+                transform.Rotate(0, -180, 0);
+            }
+        }
     }
 
     public void ChangeWeapon(int direction)
@@ -221,6 +238,11 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+    }
+
+    protected void ResetFriction()
+    {
+        rigidbody2d.sharedMaterial = fullFriction;
     }
 }
 
