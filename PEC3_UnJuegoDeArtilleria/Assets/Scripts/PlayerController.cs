@@ -193,13 +193,17 @@ public class PlayerController : MonoBehaviour
             {
                 facingRight = false;
                 transform.Rotate(0, 180, 0);
+                Debug.Log("facing left");
             }
             else if(!facingRight && horizontalInput > 0)
             {
                 facingRight = true;
                 transform.Rotate(0, -180, 0);
+                Debug.Log("facing right");
             }
         }
+
+        animator.SetBool("walking", horizontalInput != 0);
     }
 
     public void ChangeWeapon(int direction)
@@ -224,6 +228,7 @@ public class PlayerController : MonoBehaviour
         SpriteRenderer weaponSpriteRenderer = weapon.GetComponent<SpriteRenderer>();
         if(weaponSpriteRenderer != null)
             weaponSpriteRenderer.sprite = currentWeapon.SetSprite(TeamColor);
+        animator.SetTrigger(currentWeapon.name);
     }
 
     public void TakeDamage(int damage)

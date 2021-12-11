@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1800253373954480326, guid: f2706d14733dd114598f8271acbadf9d, type: 3}
   Projectile: {fileID: 11400000, guid: 6b66a84075dbff642857aac4aed7bdcf, type: 2}
-  redSprite: {fileID: 0}
-  blueSprite: {fileID: 0}
-  purpleSprite: {fileID: 0}
-  orangeSprite: {fileID: 0}
-  greenSprite: {fileID: 0}
+  redSprite: {fileID: 21300000, guid: e568be018e22f84469331cdac9abc449, type: 3}
+  blueSprite: {fileID: 21300000, guid: 38332853b7d949c429a8fb4d9b928603, type: 3}
+  purpleSprite: {fileID: 21300000, guid: cc348a5929bce8f49b2dcfdcb1757d6c, type: 3}
+  orangeSprite: {fileID: 21300000, guid: deebdf11bdf4ac04aaecc2f7ed6438fa, type: 3}
+  greenSprite: {fileID: 21300000, guid: 0f37d4f7ed59bbf45abe67ab342e3acb, type: 3}
