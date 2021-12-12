@@ -3,13 +3,18 @@ using UnityEngine.U2D;
 
 public class Terrain : MonoBehaviour
 {
-    private SpriteShapeController spriteShape;
-    private float distanceBetweenPoints;
-    [SerializeField] private int numberOfPoints = 150;
-    [SerializeField] private int scale = 1000;
-    [SerializeField] private float maxSmoothValue = 2;
-    [SerializeField] private float minSmoothValue = 0.1f;
+    private SpriteShapeController spriteShape; //SpriteShape that defines the terrain
+    private float distanceBetweenPoints; //distance between sprite shape points
+    [SerializeField] private int numberOfPoints = 150; //number of points we want
+    [SerializeField] private int scale = 1000; //scale of the terrain
+    [SerializeField] private float maxSmoothValue = 2; //maximum smooth value
+    [SerializeField] private float minSmoothValue = 0.1f; //minimum smooth value
 
+    /// <summary>
+    /// Start method where we procedurally initialize a random terrain defined by a sprite shape with a given scale and a number of points
+    /// We define the distance needed between points and define the borders
+    /// For each point needed we insert it with a random height using PerlinNoise and set a random smooth value for each side
+    /// </summary>
     private void Start()
     {
         spriteShape = GetComponent<SpriteShapeController>();

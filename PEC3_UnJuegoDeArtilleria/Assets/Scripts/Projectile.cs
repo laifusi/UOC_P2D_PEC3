@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem explosionEffect;
+    [SerializeField] private ParticleSystem explosionEffect; //ParticleSystem for the explosion
 
-    [HideInInspector] public int Damage;
+    [HideInInspector] public int Damage; //amount of damage the projectile does
 
+    /// <summary>
+    /// OnCollisionEnter to check if we hit a character
+    /// </summary>
+    /// <param name="collision">Collider2D we hit</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Instantiate(explosionEffect, transform.position, Quaternion.identity, transform);
@@ -19,6 +23,9 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method to destroy the GameObject
+    /// </summary>
     private void Destroy()
     {
         Destroy(gameObject);

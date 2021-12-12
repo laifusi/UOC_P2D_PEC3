@@ -3,16 +3,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Weapon", menuName = "MyObjects/Weapon")]
 public class WeaponSO : ScriptableObject
 {
-    public GameObject Prefab;
-    public ProjectileSO Projectile;
+    public GameObject Prefab; //weapon prefab
+    public ProjectileSO Projectile; //type of projectile the weapon shoots
 
-    [SerializeField] private Sprite redSprite;
-    [SerializeField] private Sprite blueSprite;
-    [SerializeField] private Sprite purpleSprite;
-    [SerializeField] private Sprite orangeSprite;
-    [SerializeField] private Sprite greenSprite;
+    [SerializeField] private Sprite redSprite; //sprite for the red team
+    [SerializeField] private Sprite blueSprite; //sprite for the blue team
+    [SerializeField] private Sprite purpleSprite; //sprite for the purple team
+    [SerializeField] private Sprite orangeSprite; //sprite for the orange team
+    [SerializeField] private Sprite greenSprite; //sprite for the green team
 
-    public Sprite SetSprite(TeamColor teamColor)
+    /// <summary>
+    /// Method to get the sprite for a given TeamColor
+    /// </summary>
+    /// <param name="teamColor">TeamColor</param>
+    /// <returns>weapon Sprite for the given team</returns>
+    public Sprite GetSprite(TeamColor teamColor)
     {
         Sprite sprite = null;
         switch (teamColor)

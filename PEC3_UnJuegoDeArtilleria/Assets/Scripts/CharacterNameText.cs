@@ -3,22 +3,13 @@ using UnityEngine.UI;
 
 public class CharacterNameText : MonoBehaviour
 {
-    [SerializeField] PlayerController character;
+    [SerializeField] PlayerController character; //PlayerController of the parent character
 
+    /// <summary>
+    /// Start method to set the character's name
+    /// </summary>
     private void Start()
     {
-        character.OnNameAdded += WriteName;
         GetComponent<Text>().text = character.CharacterName;
-    }
-
-    private void WriteName(string name)
-    {
-        GetComponent<Text>().text = name;
-        Debug.Log(name);
-    }
-
-    private void OnDestroy()
-    {
-        character.OnNameAdded -= WriteName;
     }
 }

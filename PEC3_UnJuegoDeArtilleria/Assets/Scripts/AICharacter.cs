@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class AICharacter : PlayerController
 {
-    [HideInInspector] public bool IsEnemyNear;
-    [HideInInspector] public Transform EnemyPosition;
+    [HideInInspector] public bool IsEnemyNear; //bool that indicates if an enemy is near
+    [HideInInspector] public Transform EnemyPosition; //Transform of the enemy that is near
+    
+    private float shootingTilt; //the tilt the AI should reach before shooting
+    private float nextShootingTime; //when the AI can shoot again
+    private int direction; //the direction of the character (-1 or 1)
+    private bool changedDirectionInThisTurn; //bool to determine if the AI can change direction again
+    private bool changedWeaponInThisTurn; //bool to determine if the AI can change weapon again
 
-    private float shootingTilt;
-    private int direction;
-    private bool changedDirectionInThisTurn;
-    private bool changedWeaponInThisTurn;
-    private bool changedCharacterInThisTurn;
-    private float nextShootingTime;
+    public static bool teamChanged; //static bool that determines if the AI can change characters (only once per turn)
 
-    public static bool teamChanged;
+    [SerializeField] float shootingRate = 0.5f; //rate at which the AI can shoot
 
-    [SerializeField] float shootingRate = 0.5f;
-
+    /// <summary>
+    /// Start method where we initilize the shootingTilt and the direction
+    /// </summary>
     private void Start()
     {
         base.Start();
@@ -24,6 +26,14 @@ public class AICharacter : PlayerController
         direction = Random.Range(0, 2) == 0 ? -1 : 1;
     }
 
+    /// <summary>
+    /// Update method where we reset the character if it's not our turn
+    /// we call the base update
+    /// we check if the enemy is near and decide what action should be done:
+    /// switch direction if we are facing the other side, tilt the weapon or shoot
+    /// If the enemy isn't near, we walk and randomly decide whether to change weapon,
+    /// change direction and change character (all limited to once per turn)
+    /// </summary>
     private void Update()
     {
         if (!HasTurn)
@@ -64,6 +74,7 @@ public class AICharacter : PlayerController
                 {
                     weaponComponent.Shoot();
                     nextShootingTime = Time.time + 1/shootingRate;
+                    shootingTilt = Random.Range(0, 0.5f);
                 }
             }
         }
@@ -83,19 +94,20 @@ public class AICharacter : PlayerController
                 ChangeWeapon(direction);
             }
 
-            if (teamChanged && !changedCharacterInThisTurn && Random.Range(0, 100) < 1)
+            if (teamChanged && Random.Range(0, 100) < 1)
             {
-                changedCharacterInThisTurn = true;
                 teamChanged = false;
                 GameplayManager.Instance.ChangeCharacter();
             }
         }
     }
 
+    /// <summary>
+    /// Method to reset the booleans that define if we changed direction or weapon in this turn
+    /// </summary>
     public void ResetAI()
     {
         changedDirectionInThisTurn = false;
         changedWeaponInThisTurn = false;
-        changedCharacterInThisTurn = false;
     }
 }
