@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
     protected float tilt = 0.5f;
     private Animator animator;
     private int health;
-    private bool facingRight = true;
+    protected bool facingRight = true;
+    private static float nextChangeTime;
 
     protected void Start()
     {
@@ -88,9 +89,11 @@ public class PlayerController : MonoBehaviour
     protected void Update()
     {
         if (!HasTurn)
+        {
             ResetFriction();
-        if (!HasTurn)
+            ResetAnimator();
             return;
+        }
 
         CheckIsGrounded();
 
@@ -98,9 +101,10 @@ public class PlayerController : MonoBehaviour
         {
             horizontalInput = Input.GetAxis("Horizontal");
 
-            if (Input.GetButtonDown("Jump"))
+            if (Time.time >= nextChangeTime && Input.GetButtonDown("Jump"))
             {
-                Jump();
+                GameplayManager.Instance.ChangeCharacter();
+                nextChangeTime = Time.time + 1;
             }
 
             verticalInput = Input.GetAxis("Vertical");
@@ -127,6 +131,11 @@ public class PlayerController : MonoBehaviour
 
         tilt = Mathf.Clamp(tilt, 0, 1);
         animator.SetFloat("tilt", tilt);
+    }
+
+    protected void ResetAnimator()
+    {
+        animator.SetBool("walking", false);
     }
 
     private void GetSlopeInfo()
@@ -199,17 +208,27 @@ public class PlayerController : MonoBehaviour
         {
             if(facingRight && horizontalInput < 0)
             {
-                facingRight = false;
-                transform.Rotate(0, 180, 0);
+                FlipLeft();
             }
             else if(!facingRight && horizontalInput > 0)
             {
-                facingRight = true;
-                transform.Rotate(0, -180, 0);
+                FlipRight();
             }
         }
 
         animator.SetBool("walking", horizontalInput != 0);
+    }
+
+    protected void FlipRight()
+    {
+        facingRight = true;
+        transform.Rotate(0, -180, 0);
+    }
+
+    protected void FlipLeft()
+    {
+        facingRight = false;
+        transform.Rotate(0, 180, 0);
     }
 
     public void ChangeWeapon(int direction)

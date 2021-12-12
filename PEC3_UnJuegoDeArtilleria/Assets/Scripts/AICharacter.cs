@@ -9,7 +9,10 @@ public class AICharacter : PlayerController
     private int direction;
     private bool changedDirectionInThisTurn;
     private bool changedWeaponInThisTurn;
+    private bool changedCharacterInThisTurn;
     private float nextShootingTime;
+
+    public static bool teamChanged;
 
     [SerializeField] float shootingRate = 0.5f;
 
@@ -27,15 +30,22 @@ public class AICharacter : PlayerController
         {
             ResetAI();
             ResetFriction();
-        }
-
-        if (!HasTurn)
+            ResetAnimator();
             return;
+        }
 
         base.Update();
 
         if(IsEnemyNear)
         {
+            if(EnemyPosition.position.x > transform.position.x && !facingRight)
+            {
+                FlipRight();
+            }
+            else if(EnemyPosition.position.x < transform.position.x && facingRight)
+            {
+                FlipLeft();
+            }
             horizontalInput = 0;
             if (Mathf.Floor(tilt * 1000)/1000 != Mathf.Floor(shootingTilt*1000)/1000)
             {
@@ -72,6 +82,13 @@ public class AICharacter : PlayerController
                 changedWeaponInThisTurn = true;
                 ChangeWeapon(direction);
             }
+
+            if (teamChanged && !changedCharacterInThisTurn && Random.Range(0, 100) < 1)
+            {
+                changedCharacterInThisTurn = true;
+                teamChanged = false;
+                GameplayManager.Instance.ChangeCharacter();
+            }
         }
     }
 
@@ -79,5 +96,6 @@ public class AICharacter : PlayerController
     {
         changedDirectionInThisTurn = false;
         changedWeaponInThisTurn = false;
+        changedCharacterInThisTurn = false;
     }
 }

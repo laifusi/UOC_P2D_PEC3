@@ -18,6 +18,7 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] Color purpleColor;
     [SerializeField] Color orangeColor;
     [SerializeField] Color greenColor;
+    [SerializeField] Text currentTeamText;
 
     private int currentTeam;
     private Teams[] teams;
@@ -25,9 +26,12 @@ public class GameplayManager : Singleton<GameplayManager>
     private PlayerController currentCharacterWithTurn;
     private int currentCharacterIndex;
 
-    public string WinnerTeam;
-    public Color WinnerTeamColor;
+    [HideInInspector] public string WinnerTeam;
+    [HideInInspector] public Color WinnerTeamColor;
 
+    public static System.Action OnTurnChange;
+
+    [System.Serializable]
     public struct Teams
     {
         public PlayerController[] Characters;
@@ -39,10 +43,7 @@ public class GameplayManager : Singleton<GameplayManager>
     {
         base.Start();
 
-        Terrain.OnTerrainDone += TerrainDone;
         PlayerController.OnCharacterDead += CharacterDead;
-
-        Physics2D.simulationMode = SimulationMode2D.Script;
 
         teams = new Teams[GameOptionsManager.Instance.Teams.Length];
         for(int i = 0; i< teams.Length; i++)
@@ -79,15 +80,13 @@ public class GameplayManager : Singleton<GameplayManager>
             textInfo[1].GetComponent<CharactersAliveTextUpdater>().TeamID = i;
         }
         currentTeam = -1;
+
+        StartCoroutine(nameof(Wait));
     }
 
-    private void TerrainDone()
+    private IEnumerator Wait()
     {
-        StartCoroutine(nameof(RestartPhysics)); 
-    }
-
-    private IEnumerator RestartPhysics()
-    {
+        Physics2D.simulationMode = SimulationMode2D.Script;
         yield return new WaitForSeconds(5);
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         InvokeRepeating(nameof(ChangeTurn), 0, turnTime);
@@ -146,8 +145,34 @@ public class GameplayManager : Singleton<GameplayManager>
             currentTeam = 0;
         }
 
+        switch(aliveTeams[currentTeam].TeamColor)
+        {
+            case TeamColor.Red:
+                currentTeamText.text = "ROJO";
+                currentTeamText.color = redColor;
+                break;
+            case TeamColor.Blue:
+                currentTeamText.text = "AZUL";
+                currentTeamText.color = blueColor;
+                break;
+            case TeamColor.Purple:
+                currentTeamText.text = "MORADO";
+                currentTeamText.color = purpleColor;
+                break;
+            case TeamColor.Orange:
+                currentTeamText.text = "NARANJA";
+                currentTeamText.color = orangeColor;
+                break;
+            case TeamColor.Green:
+                currentTeamText.text = "VERDE";
+                currentTeamText.color = greenColor;
+                break;
+        }
+
         currentCharacterIndex = -1;
         ChangeCharacter();
+        AICharacter.teamChanged = true;
+        OnTurnChange?.Invoke();
     }
 
     public void ChangeCharacter()
@@ -195,7 +220,7 @@ public class GameplayManager : Singleton<GameplayManager>
                         WinnerTeamColor = greenColor;
                         break;
                 }
-
+                CancelInvoke(nameof(ChangeTurn));
                 MenuManager.Instance.EndGame();
             }
         }
@@ -208,7 +233,6 @@ public class GameplayManager : Singleton<GameplayManager>
 
     private void OnDestroy()
     {
-        Terrain.OnTerrainDone -= TerrainDone;
         PlayerController.OnCharacterDead -= CharacterDead;
     }
 }
