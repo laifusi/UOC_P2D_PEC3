@@ -12,20 +12,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] float jumpForce = 10;
     [SerializeField] WeaponSO[] weapons;
-    public TeamColor TeamColor;
     [SerializeField] Transform hand;
     [SerializeField] Transform weaponParent;
     [SerializeField] SpriteLibraryAsset charactersLibraryAsset;
     [SerializeField] SpriteResolver[] bodyParts;
-    public CharacterType CharacterType;
     [SerializeField] int initialHealth = 100;
 
     public bool IsAI;
     public bool HasTurn;
     public string CharacterName;
+    public CharacterType CharacterType;
+    public TeamColor TeamColor;
+    public int TeamID;
 
     public Action<string> OnNameAdded;
     public Action<int> OnHealthChanged;
+    public static Action<int, PlayerController> OnCharacterDead;
 
     private Rigidbody2D rigidbody2d;
     private bool isGrounded;
@@ -248,6 +250,7 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        OnCharacterDead?.Invoke(TeamID, this);
         Destroy(gameObject);
     }
 

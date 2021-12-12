@@ -4,7 +4,7 @@ public class Singleton<T> : MonoBehaviour
 {
     public static T Instance;
 
-    void Start()
+    protected void Start()
     {
         if (Instance != null)
         {

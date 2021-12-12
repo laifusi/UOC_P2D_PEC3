@@ -25,7 +25,6 @@ public class Weapon : MonoBehaviour
     {
         if (bulletRB != null)
         {
-            //Debug.Break();
             bulletRB.gravityScale = Projectile.GravityAffection;
             bulletRB.AddForce(transform.right * Projectile.Speed, ForceMode2D.Impulse);
             bulletRB = null;

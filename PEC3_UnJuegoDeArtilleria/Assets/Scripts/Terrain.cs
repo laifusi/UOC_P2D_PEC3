@@ -10,6 +10,8 @@ public class Terrain : MonoBehaviour
     [SerializeField] private float maxSmoothValue = 2;
     [SerializeField] private float minSmoothValue = 0.1f;
 
+    public static System.Action OnTerrainDone;
+
     private void Start()
     {
         spriteShape = GetComponent<SpriteShapeController>();
@@ -25,5 +27,6 @@ public class Terrain : MonoBehaviour
             spriteShape.spline.SetLeftTangent(i + 1, new Vector3(Random.Range(-maxSmoothValue, -minSmoothValue), 0, 0));
             spriteShape.spline.SetRightTangent(i + 1, new Vector3(Random.Range(minSmoothValue, maxSmoothValue), 0, 0));
         }
+        OnTerrainDone.Invoke();
     }
 }

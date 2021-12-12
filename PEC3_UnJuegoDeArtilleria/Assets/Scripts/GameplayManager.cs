@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameplayManager : Singleton<GameplayManager>
@@ -11,6 +11,13 @@ public class GameplayManager : Singleton<GameplayManager>
     [SerializeField] Transform[] initializePositions;
     [SerializeField] CinemachineTargetGroup cinemachineTargetGroup;
     [SerializeField] float turnTime = 10f;
+    [SerializeField] GameObject teamInfoPrefab;
+    [SerializeField] Transform teamPanel;
+    [SerializeField] Color redColor;
+    [SerializeField] Color blueColor;
+    [SerializeField] Color purpleColor;
+    [SerializeField] Color orangeColor;
+    [SerializeField] Color greenColor;
 
     private int currentTeam;
     private Teams[] teams;
@@ -18,8 +25,25 @@ public class GameplayManager : Singleton<GameplayManager>
     private PlayerController currentCharacterWithTurn;
     private int currentCharacterIndex;
 
+    public string WinnerTeam;
+    public Color WinnerTeamColor;
+
+    public struct Teams
+    {
+        public PlayerController[] Characters;
+        public List<PlayerController> AliveCharacters;
+        public TeamColor TeamColor;
+    }
+
     private void Start()
     {
+        base.Start();
+
+        Terrain.OnTerrainDone += TerrainDone;
+        PlayerController.OnCharacterDead += CharacterDead;
+
+        Physics2D.simulationMode = SimulationMode2D.Script;
+
         teams = new Teams[GameOptionsManager.Instance.Teams.Length];
         for(int i = 0; i< teams.Length; i++)
         {
@@ -27,16 +51,46 @@ public class GameplayManager : Singleton<GameplayManager>
             teams[i].AliveCharacters = new List<PlayerController>();
         }
         InitializeCharacters();
+        for(int i = 0; i < teams.Length; i++)
+        {
+            GameObject teamInfo = Instantiate(teamInfoPrefab, teamPanel);
+            Image teamColor = teamInfo.GetComponentInChildren<Image>();
+            Text[] textInfo = teamInfo.GetComponentsInChildren<Text>();
+            switch (teams[i].TeamColor)
+            {
+                case TeamColor.Red:
+                    teamColor.color = redColor;
+                    break;
+                case TeamColor.Blue:
+                    teamColor.color = blueColor;
+                    break;
+                case TeamColor.Purple:
+                    teamColor.color = purpleColor;
+                    break;
+                case TeamColor.Orange:
+                    teamColor.color = orangeColor;
+                    break;
+                case TeamColor.Green:
+                    teamColor.color = greenColor;
+                    break;
+            }
+            textInfo[0].text = GameOptionsManager.Instance.Teams[i].TeamName;
+            textInfo[1].text = teams[i].AliveCharacters.Count.ToString() + " personaje(s)";
+            textInfo[1].GetComponent<CharactersAliveTextUpdater>().TeamID = i;
+        }
         currentTeam = -1;
-        InvokeRepeating(nameof(ChangeTurn), 0, turnTime);
-        StartCoroutine(nameof(Wait));
     }
 
-    private IEnumerator Wait()
+    private void TerrainDone()
     {
-        Physics2D.simulationMode = SimulationMode2D.Script;
+        StartCoroutine(nameof(RestartPhysics)); 
+    }
+
+    private IEnumerator RestartPhysics()
+    {
         yield return new WaitForSeconds(5);
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
+        InvokeRepeating(nameof(ChangeTurn), 0, turnTime);
     }
 
     private void InitializeCharacters()
@@ -53,7 +107,9 @@ public class GameplayManager : Singleton<GameplayManager>
                 prefab = characterPrefab;
             }
 
-            for(int j = 0; j < GameOptionsManager.Instance.Teams[i].Characters.Length; j++)
+            teams[i].TeamColor = GameOptionsManager.Instance.Teams[i].TeamColor;
+
+            for (int j = 0; j < GameOptionsManager.Instance.Teams[i].Characters.Length; j++)
             {
                 int randomIndex = Random.Range(0, initializePositions.Length);
                 Vector3 offset = new Vector3(Random.Range(-10f, 10f), 10, 0);
@@ -64,6 +120,7 @@ public class GameplayManager : Singleton<GameplayManager>
                 characterPC.CharacterType = GameOptionsManager.Instance.Teams[i].Characters[j].CharacterType;
                 characterPC.OnNameAdded?.Invoke(GameOptionsManager.Instance.Teams[i].Characters[j].CharacterName);
                 characterPC.CharacterName = GameOptionsManager.Instance.Teams[i].Characters[j].CharacterName;
+                characterPC.TeamID = i;
                 teams[i].Characters[j] = characterPC;
             }
         }
@@ -104,12 +161,54 @@ public class GameplayManager : Singleton<GameplayManager>
         }
         currentCharacterWithTurn = aliveTeams[currentTeam].AliveCharacters[currentCharacterIndex];
         currentCharacterWithTurn.HasTurn = true;
-        cinemachineTargetGroup.m_Targets[0].target = currentCharacterWithTurn.transform;
+        cinemachineTargetGroup.m_Targets[0].target = currentCharacterWithTurn?.transform;
     }
 
-    public struct Teams
+    private void CharacterDead(int teamID, PlayerController character)
     {
-        public PlayerController[] Characters;
-        public List<PlayerController> AliveCharacters;
+        teams[teamID].AliveCharacters.Remove(character);
+        if(teams[teamID].AliveCharacters.Count == 0)
+        {
+            aliveTeams.Remove(teams[teamID]);
+            if(aliveTeams.Count == 1)
+            {
+                switch(aliveTeams[0].TeamColor)
+                {
+                    case TeamColor.Red:
+                        WinnerTeam = "EQUIPO ROJO";
+                        WinnerTeamColor = redColor;
+                        break;
+                    case TeamColor.Blue:
+                        WinnerTeam = "EQUIPO AZUL";
+                        WinnerTeamColor = blueColor;
+                        break;
+                    case TeamColor.Purple:
+                        WinnerTeam = "EQUIPO MORADO";
+                        WinnerTeamColor = purpleColor;
+                        break;
+                    case TeamColor.Orange:
+                        WinnerTeam = "EQUIPO NARANJA";
+                        WinnerTeamColor = orangeColor;
+                        break;
+                    case TeamColor.Green:
+                        WinnerTeam = "EQUIPO VERDE";
+                        WinnerTeamColor = greenColor;
+                        break;
+                }
+
+                MenuManager.Instance.EndGame();
+            }
+        }
+    }
+
+    public int GetNumberOfAliveCharacters(int teamID)
+    {
+        return teams[teamID].AliveCharacters.Count;
+    }
+
+    private void OnDestroy()
+    {
+        Terrain.OnTerrainDone -= TerrainDone;
+        PlayerController.OnCharacterDead -= CharacterDead;
     }
 }

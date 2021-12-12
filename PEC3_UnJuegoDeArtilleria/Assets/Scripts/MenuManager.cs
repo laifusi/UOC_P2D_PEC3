@@ -13,6 +13,11 @@ public class MenuManager : Singleton<MenuManager>
         SceneManager.LoadScene("Menu");
     }
 
+    public void EndGame()
+    {
+        SceneManager.LoadScene("EndGame");
+    }
+
     public void Exit()
     {
         Application.Quit();
