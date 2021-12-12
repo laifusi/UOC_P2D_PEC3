@@ -8,6 +8,12 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public TeamColor TeamColor; //TeamColor
 
     Rigidbody2D bulletRB; //the rigidbody of the bullet
+    AudioSource audioSource; //AudioSource component
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     /// <summary>
     /// Method to shoot a bullet
@@ -23,6 +29,7 @@ public class Weapon : MonoBehaviour
         Projectile bulletProjectile = bullet.GetComponent<Projectile>();
         bulletProjectile.Damage = Projectile.Damage;
         bulletRB = bullet.GetComponent<Rigidbody2D>();
+        audioSource.Play();
     }
 
     /// <summary>

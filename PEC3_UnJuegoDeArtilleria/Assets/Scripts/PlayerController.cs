@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private float verticalInput; //vertical input (to tilt the character)
     private Animator animator; //Animator component
     private int health; //current health
+    private AudioSource audioSource; //AudioSource component
 
     private static float nextChangeTime; //time until next possible change of character (necessary to avoid multiple characters triggering the method)
 
@@ -54,6 +55,8 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+
         currentWeapon = weapons[0];
         currentWeaponIndex = 0;
         ChangeWeapon(0);
@@ -273,6 +276,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="damage">amount of damage received</param>
     public void TakeDamage(int damage)
     {
+        audioSource.Play();
         health -= damage;
         OnHealthChanged?.Invoke(health);
         if (health <= 0)

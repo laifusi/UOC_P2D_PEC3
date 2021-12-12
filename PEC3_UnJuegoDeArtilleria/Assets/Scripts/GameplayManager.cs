@@ -254,6 +254,8 @@ public class GameplayManager : Singleton<GameplayManager>
                         break;
                 }
                 CancelInvoke(nameof(ChangeTurn));
+                GetComponent<AudioSource>().Play();
+                MusicManager.Instance.StopMusic();
                 MenuManager.Instance.EndGame();
             }
         }

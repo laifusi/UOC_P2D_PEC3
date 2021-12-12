@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     /// <param name="collision">Collider2D we hit</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        GetComponent<AudioSource>().Play();
         Instantiate(explosionEffect, transform.position, Quaternion.identity, transform);
         Invoke(nameof(Destroy), explosionEffect.main.duration);
 
