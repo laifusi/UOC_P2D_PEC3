@@ -1,93 +1,51 @@
 # PEC 3 - Un juego de artilleria
 
+## Cómo jugar
+El objetivo del juego es vencer al resto de equipos y ser el único con personajes en pie. Para ello, el jugador dispone de dos tipos de armas, un lanzador de misiles y una granada.
 
+En el menú, el jugador escoge el número de equipos que participarán y el número de personajes por equipo. A continuación, se define cada uno de dichos equipos, con nombre, color y si son IA o no. Además, se escoge el aspecto y el nombre que tendrá cada personaje.
 
-## Getting started
+Una vez hechos los equipos, los personajes son lanzados a un terreno que deberán explorar, por turnos, en busca de personajes de otro equipo, para dispararles y ganar la partida. Cada turno dura 10 segundos en los que los equipos podrán moverse, disparar o cambiar el personaje activo.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Estructura e implementación
+Este juego se divide en tres escenas: el menú de inicio, en el que se deciden los equipos, la escena de juego, y la escena de fin, que determina quién ha ganado.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+En la primera escena, definimos dos clases: MenuManager y GameOptionsManager. Ambos los definimos siguiendo el patrón singleton, de forma que no se destruyan al cambiar de escena y solo exista uno en todo momento. El primero se encarga de los cambios de escena y de la salida de la aplicación, mientras que el segundo controla todas las operaciones referentes a la selección de equipos, además de almacenar la información de los mismos. Para esto, además, utilizamos dos clases que definen varias variables referentes a los equipos, la clase Team, y a los personajes, la clase Character.
 
-## Add your files
+En la escena de juego, el encargado de controlarlo todo es el GameplayManager, que seguirá también el patrón singleton. Este se encargará de inicializar los equipos y los personajes definidos en el menú y almacenados en la instancia del GameOptionsManager. Su función será, además, controlar los cambios de turno y los cambios de personaje, además de saber cuantos equipos y cuantos personajes quedan, y, por tanto, cuando se acaba el juego.
 
-- [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+El control de los personajes está definido por dos scripts, PlayerController y AICharacter. El segundo hereda del primero, de forma que es el primero el que contiene los métodos comunes de los personajes controlados por jugador y los personajes controlados por código. En el primero definimos, por tanto, los métodos necesarios para el movimiento, el cambio de arma y la pérdida de vida, además de leer los inputs del jugador. En el AICharacter, controlamos cuando un personaje IA decide si moverse, cambiar de dirección, cambiar de arma, cambiar de personaje o disparar. Este tipo de personaje, además, tiene un trigger con una clase EnemyDetectionTrigger que determinará cuando hay un enemigo cerca y cuando no. Este trigger diferencia a los enemigos comprobando si tiene el tag "Character". Para ello, es necesario que el trigger comparta LayerMask con los personajes de su equipo, ya que hemos definido la matriz de colisiones de forma que se ignoran las colisiones con tu equipo.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/lfusterco/pec-3-un-juego-de-artilleria.git
-git branch -M main
-git push -uf origin main
-```
+![Matriz de colisiones](matrizDeColisiones.png)
 
-## Integrate with your tools
+Para la definición de distintas armas y sus proyectiles, creamos dos clases que heredan de la clase ScriptableObject, WeaponSO y ProjectileSO. Estas, además de la información del arma o proyectil concreto, definen métodos para concretar el sprite o la layer mask que deberán tener según el color de equipo escogido. Además de los ScriptableObjects, tenemos una clase Weapon y una clase Projectile que heredan de MonoBehaviour para el control del GameObject del arma o del proyectil. Weapon es la clase que controla el disparo, de forma que PlayerController solo sabe qué WeaponSOs tiene disponible y qué Weapon tiene seleccionada. La clase Weapon, será, por tanto, la que sepa el tipo de proyectil que debe lanzar, y el que asignará a este sus propiedades definidas por un ProjectileSO. La clase Projectile, por su parte, se encarga de detectar cuando colisiona con otro objeto y es destruido después de accionar un sistema de partículas y esperar a que este acabe. Si colisiona con un PlayerController, le aplicará el daño que ese tipo de proyectil da.
 
-- [ ] [Set up project integrations](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://gitlab.com/lfusterco/pec-3-un-juego-de-artilleria/-/settings/integrations)
+Por otro lado, tenemos varios scripts que controlan la UI, como son el Timer, CharacterNameText, CharactersAliveTextUpdater y HealthScrollbar. Timer contará de 10 a 0 en cada turno con un método que invocamos cada segundo y con una variable que se reseteará cuando el GameplayManager cambie de turno. CharacterNameText simplemente escribe el nombre del personaje en un Text sobre la cabeza de este. CharactersAliveTextUpdater, por su parte, actualiza el texto que indica cuantos personajes le quedan a cada equipo cuando un personaje muere. HealthScrollbar define el tamaño de la barra de vida del personaje al que corresponde cuando este recibe daño.
 
-## Collaborate with your team
+Y, finalmente, la clase Terrain construye de forma procedural un terreno sobre el que caminar. Para esto, utilizamos un Sprite Shape con un tamaño y una cantidad de puntos concretos. Definimos los bordes y, para cada punto nuevo, ponemos una altura aleatoria, dentro de unos límites y usando el método PerlinNoise de Mathf. Determinamos, también, de forma aleatoria, la suavidad que tendrá el punto respecto a cada lado.
 
-- [ ] [Invite team members and collaborators](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Por último, la escena de fin consiste simplemente en un canvas formado por dos textos y dos botones. Lo más destacable es la necesidad de utilizar un script, la clase EndgameMenuManager, para, además de actualizar el equipo ganador, asignar listeners a los botones.
 
-## Test and Deploy
+## Sprites, sonidos y otros paquetes
+Para esta PEC hemos utilizado el pack [Toon Character 1](https://www.kenney.nl/assets/toon-characters-1) de [Kenney](https://www.kenney.nl/) para los personajes y el [2D Sci-Fi Weapons Pack](https://assetstore.unity.com/packages/2d/textures-materials/2d-sci-fi-weapons-pack-22679) de [3d.rina](https://assetstore.unity.com/publishers/2703) para las armas.
 
-Use the built-in continuous integration in GitLab.
+Los efectos de sonido se han hecho mediante el programa Bfxr.
 
-- [ ] [Get started with GitLab CI/CD](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+La música de fondo es [The Final Battle](https://opengameart.org/content/the-final-battle) de skrjablin.
 
-***
+En este trabajo, además, hemos utilizado Cinemachine para el control de la cámara y un TargetGroup para asignar el personaje al que la cámara debe seguir.
 
-# Editing this README
+## Builds
+Se han hecho builds tanto para Windows, como para WebGL.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://gitlab.com/-/experiment/new_project_readme_content:a546e64770ddf0699f6e3e19bd9983ea?https://www.makeareadme.com/) for this template.
+Los dos builds se pueden encontrar [aquí](https://fuscor.itch.io/p2d-pec-3-un-juego-de-artillera).
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Dificultades y problemas
+Esta PEC me ha dado varios problemas y dificultades que han hecho que el resultado final no llegue a ser el deseado.
 
-## Name
-Choose a self-explaining name for your project.
+El principal problema encontrado es que, por alguna razón que no he conseguido solucionar, a veces los personajes parecen empezar a caer antes de la formación del terreno y acaban cayendo al vacío, al menos al jugar desde el editor.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Por otro lado, como dificultades se puede destacar la forma escogida de animar a los personajes, a los que les he creado un esqueleto para poder diferenciar entre el movimiento de los pies, de los brazos y del cuerpo, y conseguir, así, que el personaje use la misma animación de giro de cuerpo mientras se mueve o con armas distintas.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-
+## Vídeo
+![](PEC3_video.mp4)
